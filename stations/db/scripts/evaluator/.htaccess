@@ -1,0 +1,9 @@
+<Files ~ "^\.(htaccess|htpasswd|htgroup)$">
+deny from all
+</Files>
+AuthUserFile /var/www/html/mband.calpoly.edu/.htpasswd
+AuthGroupFile /var/www/html/mband.calpoly.edu/.htgroup
+AuthName "Mustang Band: Current Members Section"
+AuthType Basic
+require group director drummajor evaluator
+order deny,allow

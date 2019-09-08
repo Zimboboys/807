@@ -1,0 +1,49 @@
+.hidden-actions {
+    visibility: hidden;
+}
+
+.header {
+    font-size: x-large;
+}
+
+.header.h4 {
+    font-size: xx-large;
+}
+
+.edit-pencil {
+    font-size: medium;
+}
+
+.large-edit-pencil {
+    font-size: large;
+}
+
+.star {
+    font-size: large;
+    position: absolute;
+}
+
+.checklist-name {
+    margin-left: 20px;
+}
+
+.general-info {
+    white-space: pre-wrap;
+}
+
+.collapsible-header {
+    display: block;
+}
+
+.flipped {
+    -ms-box-orient: horizontal;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+}
