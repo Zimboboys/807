@@ -540,7 +540,7 @@ function generateStation(stationID) {
                     }
 
                     let buttons;
-                    if (a.attempts.result !== "passed") {
+                    if (a.attempts.result !== "passed") { // todo fix who evaluated
                         buttons = "<i class='red-text text-darken-1 material-icons' title='Evaluated by " + a.attempts.evaluator + "\n" + a.time+ "'>remove_circle</i>";
                     } else {
                         buttons = "<i class='green-text text-darken-1 material-icons' title='Evaluated by " + a.attempts.evaluator + "\n" + a.time+ "'>check_circle</i>";

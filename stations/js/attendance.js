@@ -241,28 +241,30 @@ function formatDate(date) {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
-    return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + strTime;
+    return (date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + strTime).toString();
 }
 
 $(document).on("click", "a.on-time-item", function () {
     let buttons = "";
     let grandpa = $(this).closest('.collection-item');
     let markElement = $(this).find('i');
+    let hourglass = $(this).closest('.personnel').length !== 0 ? "<a class='late-item black-text' href='#!'><i class='material-icons'>hourglass_empty</i></a>" : "";
 
     if (markElement.text() === "check_circle_outline") {
         buttons = "<a class='no-show-item black-text' href='#!'><i class='material-icons'>remove_circle_outline</i></a>" +
-            "<a class='late-item black-text' href='#!'><i class='material-icons'>hourglass_empty</i></a>" +
+            hourglass +
             "<a class='on-time-item green-text text-darken-1' href='#!'><i class='material-icons'>check_circle</i></a>";
         grandpa.attr('class', 'collection-item on-time');
     } else {
         buttons = "<a class='no-show-item black-text' href='#!'><i class='material-icons'>remove_circle_outline</i></a>" +
-            "<a class='late-item black-text' href='#!'><i class='material-icons'>hourglass_empty</i></a>" +
+            hourglass +
             "<a class='on-time-item black-text' href='#!'><i class='material-icons'>check_circle_outline</i></a>";
         grandpa.attr('class', 'collection-item');
     }
 
     $(this).closest('.right').html(buttons);
 });
+
 
 $(document).on("click", "a.late-item", function () {
     let buttons = "";
@@ -289,15 +291,16 @@ $(document).on("click", "a.no-show-item", function () {
     let buttons = "";
     let grandpa = $(this).closest('.collection-item');
     let markElement = $(this).find('i');
+    let hourglass = $(this).closest('.personnel').length !== 0 ? "<a class='late-item black-text' href='#!'><i class='material-icons'>hourglass_empty</i></a>" : "";
 
     if (markElement.text() === "remove_circle_outline") {
-        buttons = "<a class='failed-item red-text text-darken-1' href='#!'><i class='material-icons'>remove_circle</i></a> " +
-            "<a class='late-item black-text' href='#!'><i class='material-icons'>hourglass_empty</i></a>" +
-            "<a class='passed-item black-text' href='#!'><i class='material-icons'>check_circle_outline</i></a>";
+        buttons = "<a class='no-show-item red-text text-darken-1' href='#!'><i class='material-icons'>remove_circle</i></a> " +
+            hourglass +
+            "<a class='on-time-item black-text' href='#!'><i class='material-icons'>check_circle_outline</i></a>";
         grandpa.attr('class', 'collection-item no-show');
     } else {
         buttons = "<a class='no-show-item black-text' href='#!'><i class='material-icons'>remove_circle_outline</i></a>" +
-            "<a class='late-item black-text' href='#!'><i class='material-icons'>hourglass_empty</i></a>" +
+            hourglass +
             "<a class='on-time-item black-text' href='#!'><i class='material-icons'>check_circle_outline</i></a>";
         grandpa.attr('class', 'collection-item');
     }
@@ -310,7 +313,6 @@ $(document).on("click", "a.submit-attendance", function () {
     let late = $('.collection-item.late');
     let noshow = $('.collection-item.no-show');
 
-    console.log(ontime.length + late.length + noshow.length);
     if ($('.collection-item').length !== ontime.length + late.length + noshow.length) {
         $('.modal').modal('open');
     } else {

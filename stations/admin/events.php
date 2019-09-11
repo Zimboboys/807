@@ -22,7 +22,7 @@ $futureEventsQ = mysqli_query($conn, $futureEventsSQL);
 
                 ?>
                 <li class="collection-item" id="<?php echo 'e_' . $event->getID(); ?>">
-                    <span class="datetime"><?php echo $event->getTime(); ?></span> -
+                    <!-- <span class="dt"><?php //echo $event->getTime(); ?></span> - -->
                     <span><?php echo $event->getTitle(); ?></span>
                     <span class="hidden-actions right">
                         <a class='edit-station black-text'
@@ -47,7 +47,7 @@ $futureEventsQ = mysqli_query($conn, $futureEventsSQL);
 
                 ?>
                 <li class="collection-item" id="<?php echo 'e_' . $event->getID(); ?>">
-                    <span class="datetime"><?php echo $event->getTime(); ?></span> -
+                    <!-- <span class="dt"><?php // echo $event->getTime(); ?></span> - -->
                     <span><?php echo $event->getTitle(); ?></span>
                     <span class="hidden-actions right">
                         <a class='edit-station black-text'

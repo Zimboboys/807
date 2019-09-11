@@ -66,13 +66,13 @@ while ($stationLoop = $getStationQ->fetch_assoc()) {
                                 echo "<h5>Environment</h5>";
                                 $packet = $station->getPacketContent('instructor', 'environment');
                                 foreach ($packet as $id => $content) {
-                                    echo $content == null ? "no info provided" : $content;
+                                    echo $content == null ? "no info provided" : preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1">$1</a>', $content);
                                 }
 
                                 echo "<h5>Script</h5>";
                                 $packet = $station->getPacketContent('instructor', 'script');
                                 foreach ($packet as $id => $content) {
-                                    echo $content == null ? "no info provided" : $content;
+                                    echo $content == null ? "no info provided" : preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1">$1</a>', $content);
                                 }
 
                                 ?></div>
@@ -84,13 +84,13 @@ while ($stationLoop = $getStationQ->fetch_assoc()) {
                                 echo "<h5>Environment</h5>";
                                 $packet = $station->getPacketContent('evaluator', 'environment');
                                 foreach ($packet as $id => $content) {
-                                    echo $content == null ? "no info provided" : $content;
+                                    echo $content == null ? "no info provided" : preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1">$1</a>', $content);
                                 }
 
                                 echo "<h5>Script</h5>";
                                 $packet = $station->getPacketContent('evaluator', 'script');
                                 foreach ($packet as $id => $content) {
-                                    echo $content == null ? "no info provided" : $content;
+                                    echo $content == null ? "no info provided" : preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1">$1</a>', $content);
                                 }
 
                                 ?></div>

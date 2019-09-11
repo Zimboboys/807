@@ -57,11 +57,25 @@ class event
         return false;
     }
 
-    function openAttendance()
+    function openAttendance($position)
     {
-        $lower_range = -435;
-        $upper_range = -400;
+        $tz_offset = -420; // accounts for pacific time. ranges are in minutes
+        $lower_range = 0;
+        $upper_range = 0;
+
         $event_difference = (time() - strtotime($this->getTime())) / 60; // i do not understand
-        return ($lower_range < $event_difference) && ($event_difference < $upper_range);
+
+        if ($position == "sectionleader") {
+            $lower_range = -15;
+            $upper_range = 10;
+        } else if ($position == "personnel") {
+            $lower_range = 10;
+            $upper_range = 20;
+        } else if ($position == "drummajor") {
+            $lower_range = 20;
+            $upper_range = 35;
+        }
+
+        return (($lower_range + $tz_offset) < $event_difference) && ($event_difference < ($upper_range + $tz_offset));
     }
 }

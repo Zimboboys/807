@@ -38,6 +38,7 @@ $homeDIR = substr(dirname(__DIR__, 1), 13);
             if ($user->checkGroup("drummajor") || $user->checkGroup("director")) { ?>
                 <li><a href='<?php echo $homeDIR . '/stations/admin/'; ?>'>Overview</a></li>
             <?php } ?>
+            <li><a href="<?php echo $homeDIR . '/stations/profile'; ?>">Profile</a></li>
         </ul>
         <ul class="side-nav" id="mobile-demo">
             <li><a href="<?php echo $homeDIR; ?>">Home</a></li>
@@ -49,6 +50,7 @@ $homeDIR = substr(dirname(__DIR__, 1), 13);
             if ($user->checkGroup("drummajor") || $user->checkGroup("director")) { ?>
                 <li><a href='<?php echo $homeDIR . '/stations/admin/'; ?>'>Overview</a></li>
             <?php } ?>
+            <li><a href="<?php echo $homeDIR . '/stations/profile'; ?>">Profile</a></li>
         </ul>
     </div>
 </nav>

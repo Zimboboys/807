@@ -2,6 +2,7 @@
 
 class user
 {
+    private $conn;
     private $id;
     private $username;
     private $name;
@@ -17,6 +18,7 @@ class user
 
     function __construct($conn)
     {
+        $this->conn = $conn;
         $this->username = $_SERVER['PHP_AUTH_USER'];
         $this->groups = $this->setGroups();
         $this->setUserInfo($conn);
@@ -161,5 +163,42 @@ class user
     {
         // $band is the bandID
         return in_array($band, $this->bands);
+    }
+
+    function setEventAttendance($eid)
+    {
+        $checkSQL = "SELECT * FROM attendance WHERE eventID = $eid AND leaderID = $this->id";
+        $res = mysqli_query($this->conn, $checkSQL);
+        return mysqli_num_rows($res) > 0;
+    }
+
+    function changePassword($password)
+    {
+        // https://stackoverflow.com/questions/2994637/how-to-edit-htpasswd-using-php
+
+        $new_password = password_hash($password, PASSWORD_DEFAULT);
+        $htpasswd_file = '/var/www/html/mband.calpoly.edu/.htpasswd';
+
+        //read the file into an array
+        $lines = explode("\n", file_get_contents($htpasswd_file));
+
+        //read the array and change the data if found
+        $new_file = "";
+        foreach ($lines as $line) {
+            $line = preg_replace('/\s+/', '', $line); // remove spaces
+            if ($line) {
+                list($user, $pass) = explode(":", $line, 2);
+                if ($user == $this->username) {
+                    $new_file .= $user . ':' . $new_password . "\n";
+                } else {
+                    $new_file .= $user . ':' . $pass . "\n";
+                }
+            }
+        }
+
+        //save the information
+        $f = fopen($htpasswd_file, "w") or die("couldn't open the file");
+        fwrite($f, $new_file);
+        fclose($f);
     }
 }

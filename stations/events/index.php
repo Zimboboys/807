@@ -2,6 +2,9 @@
 include_once "../header.php";
 include_once "../db/event.php";
 
+// $user->setUsername($conn, 'afmaxwel');  // random section leader
+// $user->setUsername($conn, 'rsplitge'); // random personnel manager
+
 $pastEventsSQL = "SELECT * FROM events WHERE datetime < CURDATE() ORDER BY datetime DESC";
 $pastEventsQ = mysqli_query($conn, $pastEventsSQL);
 
@@ -21,21 +24,47 @@ $futureEventsQ = mysqli_query($conn, $futureEventsSQL);
                 $event = new event($conn, $e['eventID']);
                 ?>
                 <li class="collection-item row" id="<?php echo 'e_' . $event->getID(); ?>">
-                    <span class="datetime"><?php echo $event->getTime(); ?></span> -
+                    <!-- <span class="dt"><?php //echo $event->getTime(); ?></span> - -->
                     <span><?php echo $event->getTitle(); ?></span>
                     <?php if ($event->hasBand($user->getBands())) { ?>
                         <strong class="red-text text-lighten-1">*</strong>
                     <?php } ?>
 
                     <?php
+                    if ($user->checkGroup('sectionleader')) {
 
-                    // section leaders can only see when it is 15before - 20after the event
+                        $userSections = [];
+                        $sections = ['altosax', 'baritone', 'bassdrum', 'clarinet', 'colorguard', 'cymbals', 'flute', 'horn', 'snaredrum', 'sousaphone', 'tenordrums', 'tenorsax', 'trombone', 'trumpet', 'twirler'];
+                        foreach ($user->getGroups() as $group) {
+                            if (in_array($group, $sections)) {
+                                array_push($userSections, $group);
+                            }
+                        }
+                        $sqlSections = "'";
+                        $sqlSections .= implode("', '", $userSections);
+                        $sqlSections .= "'";
+
+
+                        $eid = $event->getID();
+
+                        // for section leader duplication check
+                        $findAttendanceSQL = "SELECT * FROM attendance INNER JOIN users ON attendance.memberID = users.userID WHERE eventID = $eid AND users.section IN ($sqlSections)";
+                        $findAttendance = mysqli_query($conn, $findAttendanceSQL);
+                    }
+
+
+                    // see $event->openAttendance for times where events are open
                     if (
-                            ($user->checkGroup("drummajor") || $user->checkGroup("personnel") || $user->checkGroup("director"))
-                            ||
-                            ($user->checkGroup("sectionleader") && $event->openAttendance())
+                        ($user->checkGroup("director"))
+                        ||
+                        ($user->checkGroup("sectionleader") && $event->openAttendance('sectionleader') && mysqli_num_rows($findAttendance) == 0)
+                        ||
+                        ($user->checkGroup('personnel') && $event->openAttendance('personnel'))
+                        ||
+                        ($user->checkGroup('drummajor') && $event->openAttendance('drummajor'))
                     ) { ?>
-                        <a href="attendance/?id=<?php echo 'e_' . $event->getID(); ?>" class="secondary-content"><i class="material-icons">assignment_ind</i></a>
+                        <a href="attendance/?id=<?php echo 'e_' . $event->getID(); ?>" class="secondary-content"><i
+                                    class="material-icons">assignment_ind</i></a>
                     <?php }
                     ?>
                 </li>
@@ -50,7 +79,8 @@ $futureEventsQ = mysqli_query($conn, $futureEventsSQL);
                 $event = new event($conn, $e['eventID']);
                 ?>
                 <li class="collection-item row" id="<?php echo 'e_' . $event->getID(); ?>">
-                    <span class="datetime"><?php echo $event->getTime(); ?></span> -
+                    <!-- todo change class to 'datetime' ---   also in admin -->
+                    <!-- <span class="dt"><?php //echo $event->getTime(); ?></span> - -->
                     <span><?php echo $event->getTitle(); ?></span>
                     <?php if ($event->hasBand($user->getBands())) { ?>
                         <strong class="red-text text-lighten-1">*</strong>
@@ -58,7 +88,8 @@ $futureEventsQ = mysqli_query($conn, $futureEventsSQL);
 
                     <?php // section leaders cannot see
                     if (($user->checkGroup("drummajor") || $user->checkGroup("personnel") || $user->checkGroup("director"))) { ?>
-                        <a href="attendance/?id=<?php echo 'e_' . $event->getID(); ?>" class="secondary-content"><i class="material-icons">assignment_ind</i></a>
+                        <a href="attendance/?id=<?php echo 'e_' . $event->getID(); ?>" class="secondary-content"><i
+                                    class="material-icons">assignment_ind</i></a>
                     <?php }
                     ?>
                 </li>
